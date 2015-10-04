@@ -31,7 +31,7 @@ function map_tree($category){
     return $tree;
 }
 
-//
+// Rework tree array to string
 function category_to_string($data){
     $string = '';
     foreach($data as $item){
@@ -40,9 +40,24 @@ function category_to_string($data){
     return $string;
 }
 
-//
+// Build like template
 function category_to_template($category){
     ob_start();
     include 'category_template.php';
     return ob_get_clean();
+}
+
+// Breadcrumbs
+function breadcrumbs($array, $id){
+    if(!$id) return false;
+
+    $count = count($array);
+    $breadcrumbs_array = array();
+    for($i=0; $i < $count; $i++){
+        if($array[$id]){
+            $breadcrumbs_array[$array[$id]['id']] = $array[$id]['title'];
+            $id = $array[$id]['parent'];
+        } else break;
+    }
+    return array_reverse($breadcrumbs_array, true);
 }
